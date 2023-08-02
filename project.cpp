@@ -146,10 +146,12 @@ void leave(studentRecord &s, houseRecord &h){
     cout<<"Enter house id: "; cin>>houseId;
     if(s.exists(id, houseId)){
         h.setVacant(houseId, true);
+        cout<<"Thank you\n";
     }
     else{
         cout<<"The house is not rented\n";
     }
+    cout<<"\n";
 }
 void query(houseRecord h){
     int water, floor, maxCost;
