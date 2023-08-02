@@ -2,7 +2,6 @@
 #include<vector>
 #include<string>
 using namespace std;
-//class houseRecord;
 class student{
     string name;
     int id;
@@ -15,6 +14,7 @@ public:
     int getID(){
         return id;
     }
+    friend class studentRecord;
 };
 class studentRecord{
     vector<pair<student, int>>record;
@@ -37,7 +37,9 @@ public:
         record.push_back({stu, houseId});
     }
 
+
 };
+class houseRecord;
 class house{
     int id;
     int water;
@@ -45,6 +47,7 @@ class house{
     int cost;
     bool vacant;
 public:
+    friend class houseRecord;
     house(){}
     house(int id, int water, int floor, int cost, bool vacant){
         this->id=id;
@@ -64,8 +67,10 @@ public:
     }
     void show(){
 
-        cout<<id<<"\t"<<water<<"\t"<<floor<<"\t"<<cost<<"\t"<<((vacant)?"Yes":"NO")<<"\n";
+        cout<<id<<"\t"<<water<<"\t"<<((floor==0)?"Ground":((floor==1)?"DownRoof":"Others"))<<"\t"<<cost<<"\t"<<((vacant)?"Yes":"NO")<<"\n";
+
     }
+    friend void query(houseRecord);
 
 };
 class houseRecord{
@@ -73,7 +78,7 @@ class houseRecord{
     public:
         houseRecord(){}
         void showAll(){
-            cout<<"HouseId\tWater\tFloor\tCost\tVacancy\n";
+            cout<<"HouseId\tWater\tFloor\t\tCost\tVacancy\n";
             for(auto elem:record){
 
                 elem.show();
@@ -81,6 +86,9 @@ class houseRecord{
         }
         void addHouse(){
             int id, water, floor, cost;
+            cout << " -----------------------------" << endl;
+            cout << "|         Add New House       |" << endl;
+            cout << " -----------------------------" << endl;
             cout<<"Enter house id: "; cin>>id;
             cout<<"Enter water condition[1(Good), 2(Salty)]: "; cin>>water;
             cout<<"Enter floor[0(Ground),1(DownRoof),2(Others)]: ";cin>>floor;
@@ -91,6 +99,7 @@ class houseRecord{
             else{
                 house h(id, water, floor, cost, true);
                 record.push_back(h);
+                cout<<"\nHouse Registered Successfully!\n\n";
             }
         }
         void setVacant(int id, bool what){
@@ -108,9 +117,13 @@ class houseRecord{
             }
             return false;
         }
+        friend void query(houseRecord);
 };
 void rent(studentRecord &s, houseRecord &h){
     int id, houseId; string name;
+    cout << " -----------------------------" << endl;
+    cout << "|         Rent a house        |" << endl;
+    cout << " -----------------------------" << endl;
     cout<<"Enter student name: "; cin.ignore(); cin>>name;
     cout<<"Enter student id: "; cin>>id;
     cout<<"Enter house id: "; cin>>houseId;
@@ -118,13 +131,17 @@ void rent(studentRecord &s, houseRecord &h){
         h.setVacant(houseId, false);
         student x(name, id);
         s.addStudent(x, houseId);
+        cout<<"\nHouse rented successfully!\n\n";
     }
     else{
-        cout<<"The house is not vacant\n";
+        cout<<"\nThe house is not vacant\n\n";
     }
 }
 void leave(studentRecord &s, houseRecord &h){
     int id, houseId;
+    cout << " -----------------------------" << endl;
+    cout << "|          Leave house        |" << endl;
+    cout << " -----------------------------" << endl;
     cout<<"Enter student id: "; cin>>id;
     cout<<"Enter house id: "; cin>>houseId;
     if(s.exists(id, houseId)){
@@ -134,10 +151,38 @@ void leave(studentRecord &s, houseRecord &h){
         cout<<"The house is not rented\n";
     }
 }
+void query(houseRecord h){
+    int water, floor, maxCost;
+    cout << " -----------------------------" << endl;
+    cout << "|         Search house        |" << endl;
+    cout << " -----------------------------" << endl;
+    cout<<"Water condition: [1(Good), 2(Salty)] "; cin>> water;
+    cout<<"Floor: [0(Ground Floor), 1(DownRoof), Others] "; cin>>floor;
+    cout<<"Maximum cost: ";cin>>maxCost;
+    bool found=false;
+    cout<<"\n---------------------------------------\n";
+    cout<<"HouseId\tWater\tFloor\t\tCost\tVacancy\n";
+    for(auto elem: h.record){
+
+        if(elem.water==water && elem.floor==floor && elem.cost<=maxCost){
+            if(elem.vacant){
+                found=true;
+                elem.show();
+            }
+        }
+    }
+    if(!found)
+    cout<<"\nNo house found!\n";
+    cout<<"---------------------------------------\n";
+    cout<<"\n";
+}
 int main(){
     houseRecord h; studentRecord s;
     while(true){
-        cout<<"1.Register new house\n2.Rent house\n3.Leave house\n4.Show All house\n5.Exit\n\nYour choice: ";
+        cout << "********************************" << endl;
+        cout << "*    Student Mess Management   *" << endl;
+        cout << "********************************" << endl;
+        cout<<"| 1.Register new house\n| 2.Rent house\n| 3.Leave house\n| 4.Show All house\n| 5.Search House\n| 0.Exit\n\nYour choice: ";
         int i; cin>>i;
         if(i==1){
             h.addHouse();
@@ -152,6 +197,9 @@ int main(){
             h.showAll();
         }
         else if(i==5){
+            query(h);
+        }
+        else if(i==0){
             cout<<"Thanks for using our service\n";
             break;
         }
