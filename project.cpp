@@ -2,6 +2,10 @@
 #include<vector>
 #include<string>
 using namespace std;
+class student;
+class studentRecord;
+class house;
+class houseRecord;
 class student{
     string name;
     int id;
@@ -36,10 +40,10 @@ public:
     void addStudent(student stu, int houseId){
         record.push_back({stu, houseId});
     }
-
+    void rent(studentRecord &s, houseRecord &h);
+    void leave(studentRecord &s, houseRecord &h);
 
 };
-class houseRecord;
 class house{
     int id;
     int water;
@@ -67,7 +71,7 @@ public:
     }
     void show(){
 
-        cout<<id<<"\t"<<water<<"\t"<<((floor==0)?"Ground":((floor==1)?"DownRoof":"Others"))<<"\t"<<cost<<"\t"<<((vacant)?"Yes":"NO")<<"\n";
+        cout<<id<<"\t"<<water<<"\t"<<floor<<"\t\t"<<cost<<"\t"<<((vacant)?"Yes":"NO")<<"\n";
 
     }
     friend void query(houseRecord);
@@ -102,6 +106,26 @@ class houseRecord{
                 cout<<"\nHouse Registered Successfully!\n\n";
             }
         }
+        void removeHouse(){
+            int id, water, floor, cost;
+            cout << " -----------------------------" << endl;
+            cout << "|         Remove a House      |" << endl;
+            cout << " -----------------------------" << endl;
+            cout<<"Enter house id: "; cin>>id;
+            cout<<"Enter water condition[1(Good), 2(Salty)]: "; cin>>water;
+            cout<<"Enter floor[0(Ground),1(DownRoof),2(Others)]: ";cin>>floor;
+            cout<<"Enter cost: "; cin>>cost;
+            auto it=record.begin();
+            for(auto elem:record){
+                if(elem.id==id && elem.water==water && elem.floor==floor && elem.cost==cost){
+                    record.erase(it);
+                    cout<<"\nHouse successfully removed!\n\n";
+                    return;
+                }
+                it++;
+            }
+            cout<<"\nThis house don't exist in the record\n\n";
+        }
         void setVacant(int id, bool what){
             for(auto &elem: record){
                 if(elem.getID()==id){
@@ -118,6 +142,8 @@ class houseRecord{
             return false;
         }
         friend void query(houseRecord);
+        void rent(studentRecord &s, houseRecord &h);
+        void leave(studentRecord &s, houseRecord &h);
 };
 void rent(studentRecord &s, houseRecord &h){
     int id, houseId; string name;
@@ -184,7 +210,7 @@ int main(){
         cout << "********************************" << endl;
         cout << "*    Student Mess Management   *" << endl;
         cout << "********************************" << endl;
-        cout<<"| 1.Register new house\n| 2.Rent house\n| 3.Leave house\n| 4.Show All house\n| 5.Search House\n| 0.Exit\n\nYour choice: ";
+        cout<<"| 1.Register new house\n| 2.Rent house\n| 3.Leave house\n| 4.Show All house\n| 5.Search House\n| 6.Remove House\n| 0.Exit\n\nYour choice: ";
         int i; cin>>i;
         if(i==1){
             h.addHouse();
@@ -200,6 +226,9 @@ int main(){
         }
         else if(i==5){
             query(h);
+        }
+        else if(i==6){
+            h.removeHouse();
         }
         else if(i==0){
             cout<<"Thanks for using our service\n";
