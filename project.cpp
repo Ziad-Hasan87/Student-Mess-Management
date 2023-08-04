@@ -81,6 +81,10 @@ class houseRecord{
     vector<house>record;
     public:
         houseRecord(){}
+        void defaultAdd(int id, int water, int floor, int cost){
+            house temp(id, water, floor, cost, true);
+            record.push_back(temp);
+        }
         void showAll(){
             cout<<"HouseId\tWater\tFloor\t\tCost\tVacancy\n";
             for(auto elem:record){
@@ -95,9 +99,9 @@ class houseRecord{
             cout << " -----------------------------" << endl;
             cout<<"Enter house id: "; cin>>id;
             cout<<"Enter water condition[1(Good), 2(Salty)]: "; cin>>water;
-            cout<<"Enter floor[0(Ground),1(DownRoof),2(Others)]: ";cin>>floor;
+            cout<<"Enter floor: ";cin>>floor;
             cout<<"Enter cost: "; cin>>cost;
-            if(id<0 || !(water==1 || water==2) || !(floor==0 || floor==1 || floor==2) || cost<0){
+            if(id<0 || !(water==1 || water==2) || floor<0 || cost<0){
                 cout<<"Wrong input for adding house\n";
             }
             else{
@@ -113,7 +117,7 @@ class houseRecord{
             cout << " -----------------------------" << endl;
             cout<<"Enter house id: "; cin>>id;
             cout<<"Enter water condition[1(Good), 2(Salty)]: "; cin>>water;
-            cout<<"Enter floor[0(Ground),1(DownRoof),2(Others)]: ";cin>>floor;
+            cout<<"Enter floor: ";cin>>floor;
             cout<<"Enter cost: "; cin>>cost;
             auto it=record.begin();
             for(auto elem:record){
@@ -185,7 +189,7 @@ void query(houseRecord h){
     cout << "|         Search house        |" << endl;
     cout << " -----------------------------" << endl;
     cout<<"Water condition: [1(Good), 2(Salty)] "; cin>> water;
-    cout<<"Floor: [0(Ground Floor), 1(DownRoof), Others] "; cin>>floor;
+    cout<<"Floor: "; cin>>floor;
     cout<<"Maximum cost: ";cin>>maxCost;
     bool found=false;
     cout<<"\n---------------------------------------\n";
@@ -206,6 +210,12 @@ void query(houseRecord h){
 }
 int main(){
     houseRecord h; studentRecord s;
+    h.defaultAdd(1, 1, 0, 2000);
+    h.defaultAdd(2, 2, 1, 1500);
+    h.defaultAdd(3, 1, 2, 2500);
+    h.defaultAdd(4, 1, 0, 1700);
+    h.defaultAdd(5, 2, 2, 3000);
+
     while(true){
         cout << "********************************" << endl;
         cout << "*    Student Mess Management   *" << endl;
