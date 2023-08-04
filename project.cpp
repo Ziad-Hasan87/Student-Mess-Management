@@ -71,7 +71,7 @@ public:
     }
     void show(){
 
-        cout<<id<<"\t"<<water<<"\t"<<floor<<"\t\t"<<cost<<"\t"<<((vacant)?"Yes":"NO")<<"\n";
+        cout<<id<<"\t"<<((water==1)?"Good":"Salty")<<"\t"<<floor<<"\t\t"<<cost<<"\t"<<((vacant)?"Yes":"NO")<<"\n";
 
     }
     friend void query(houseRecord);
@@ -192,7 +192,7 @@ void query(houseRecord h){
     cout<<"Floor: "; cin>>floor;
     cout<<"Maximum cost: ";cin>>maxCost;
     bool found=false;
-    cout<<"\n---------------------------------------\n";
+    cout<<"\n-------------------------------------------------\n";
     cout<<"HouseId\tWater\tFloor\t\tCost\tVacancy\n";
     for(auto elem: h.record){
 
@@ -205,7 +205,7 @@ void query(houseRecord h){
     }
     if(!found)
     cout<<"\nNo house found!\n";
-    cout<<"---------------------------------------\n";
+    cout<<"-------------------------------------------------\n";
     cout<<"\n";
 }
 int main(){
