@@ -40,8 +40,8 @@ public:
     void addStudent(student stu, int houseId){
         record.push_back({stu, houseId});
     }
-    void rent(studentRecord &s, houseRecord &h);
-    void leave(studentRecord &s, houseRecord &h);
+    friend void rent(studentRecord &s, houseRecord &h);
+    friend void leave(studentRecord &s, houseRecord &h);
 
 };
 class house{
@@ -146,8 +146,8 @@ class houseRecord{
             return false;
         }
         friend void query(houseRecord);
-        void rent(studentRecord &s, houseRecord &h);
-        void leave(studentRecord &s, houseRecord &h);
+        friend void rent(studentRecord &s, houseRecord &h);
+        friend void leave(studentRecord &s, houseRecord &h);
 };
 void rent(studentRecord &s, houseRecord &h){
     int id, houseId; string name;
