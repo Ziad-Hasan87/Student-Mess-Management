@@ -21,8 +21,12 @@ int main() {
         result = num1 * num2;
         cout << "Result: " << result << endl;
     } else if (op == "div") {
+        if (num2 == 0) {
+            cout << "Error: Division by zero!" << endl;
+        } else {
             result = num1 / num2;
             cout << "Result: " << result << endl;
+        }
     } else {
         cout << "Invalid operand!" << endl;
     }
